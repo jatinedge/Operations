@@ -11,11 +11,17 @@ Resources:
   PubPrivateVPC:
     Type: 'AWS::EC2::VPC'
     Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker"
       CidrBlock: 172.31.0.0/16
 
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker"
       VpcId:
         Ref: PubPrivateVPC
       AvailabilityZone: us-east-1a
@@ -25,6 +31,9 @@ Resources:
   PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker"
       VpcId:
         Ref: PubPrivateVPC
       AvailabilityZone: us-east-1b
@@ -34,6 +43,9 @@ Resources:
   PrivateSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker"
       VpcId:
         Ref: PubPrivateVPC
       AvailabilityZone: us-east-1a
@@ -43,6 +55,9 @@ Resources:
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker"
       VpcId:
         Ref: PubPrivateVPC
       AvailabilityZone: us-east-1b
