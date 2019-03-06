@@ -16,7 +16,8 @@ Parameters:
 
   PoCMSSubnet1:
     Type: String
-    Default: vpc-a80ba2d2
+    Default: AWS::EC2::subnet::id
+    Description: This is an existing VPC Network Subnet Resource provided by Anthem Cloud CoE
 
   InstanceTypeParameter:
     Type: String
@@ -26,80 +27,6 @@ Parameters:
       - m1.small
       - m1.large
     Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
-
-Resources:
-
-  PublicSubnet1:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet1"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1a
-      CidrBlock: 172.31.1.0/24
-      MapPublicIpOnLaunch: true
-
-  PublicSubnet2:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet2"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1b
-      CidrBlock: 172.31.2.0/24
-      MapPublicIpOnLaunch: true
-
-  PrivateSubnet3:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet3"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1a
-      CidrBlock: 172.31.3.0/24
-      MapPublicIpOnLaunch: false
-
-  PrivateSubnet4:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet4"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1b
-      CidrBlock: 172.31.4.0/24
-      MapPublicIpOnLaunch: false
-
-  PublicSubnet5:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet5"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1a
-      CidrBlock: 172.31.5.0/24
-      MapPublicIpOnLaunch: true
-
-  PrivateSubnet5:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker_Subnet5"
-      VpcId:
-        Ref: POCVPC
-      AvailabilityZone: us-east-1b
-      CidrBlock: 172.31.5.0/24
-      MapPublicIpOnLaunch: false
 
   #
   #
