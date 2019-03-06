@@ -7,23 +7,46 @@
 #   An Internet Gateway (with routes to it for Public Subnets)
 #   A NAT Gateway for outbound access (with routes from Private Subnets set to use it)
 
+Parameters:
+  POC_VPC:
+    Type: String
+    Default: vpc-047adf34af745d5ee
+    Description: This is an existing VPC Network Resource provided by Anthem Cloud CoE
+
+
+
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - m1.small
+      - m1.large
+    Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+
 Resources:
-  PubPrivateVPC:
-    Type: 'AWS::EC2::VPC'
-    Properties:
-      Tags:
-      - Key: Name
-        Value: "Broker"
-      CidrBlock: 172.31.0.0/16
+
+PublicSubnet5:
+  Type: 'AWS::EC2::Subnet'
+  Properties:
+    Tags:
+    - Key: Name
+      Value: "Broker_Subnet4"
+    VpcId:
+      Ref: POC_VPC
+    AvailabilityZone: us-east-1a
+    CidrBlock: 172.31.5.0/24
+    MapPublicIpOnLaunch: true
+
 
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
       Tags:
       - Key: Name
-        Value: "Broker"
+        Value: "Broker_Subnet1"
       VpcId:
-        Ref: PubPrivateVPC
+        Ref: POC_VPC
       AvailabilityZone: us-east-1a
       CidrBlock: 172.31.1.0/24
       MapPublicIpOnLaunch: true
@@ -33,33 +56,33 @@ Resources:
     Properties:
       Tags:
       - Key: Name
-        Value: "Broker"
+        Value: "Broker_Subnet2"
       VpcId:
-        Ref: PubPrivateVPC
+        Ref: POC_VPC
       AvailabilityZone: us-east-1b
       CidrBlock: 172.31.2.0/24
       MapPublicIpOnLaunch: true
 
-  PrivateSubnet1:
+  PrivateSubnet3:
     Type: 'AWS::EC2::Subnet'
     Properties:
       Tags:
       - Key: Name
-        Value: "Broker"
+        Value: "Broker_Subnet3"
       VpcId:
-        Ref: PubPrivateVPC
+        Ref: POC_VPC
       AvailabilityZone: us-east-1a
       CidrBlock: 172.31.3.0/24
       MapPublicIpOnLaunch: false
 
-  PrivateSubnet2:
+  PrivateSubnet4:
     Type: 'AWS::EC2::Subnet'
     Properties:
       Tags:
       - Key: Name
-        Value: "Broker"
+        Value: "Broker_Subnet4"
       VpcId:
-        Ref: PubPrivateVPC
+        Ref: POC_VPC
       AvailabilityZone: us-east-1b
       CidrBlock: 172.31.4.0/24
       MapPublicIpOnLaunch: false
