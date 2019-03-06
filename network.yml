@@ -8,10 +8,10 @@
 #   A NAT Gateway for outbound access (with routes from Private Subnets set to use it)
 
 Parameters:
-  
+
   POCVPC:
     Type: String
-    Default: vpc-047adf34af745d5ee
+    Default: vpc-a80ba2d2
     Description: This is an existing VPC Network Resource provided by Anthem Cloud CoE
 
   InstanceTypeParameter:
