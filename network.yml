@@ -8,12 +8,11 @@
 #   A NAT Gateway for outbound access (with routes from Private Subnets set to use it)
 
 Parameters:
-  POC_VPC:
+  
+  POCVPC:
     Type: String
     Default: vpc-047adf34af745d5ee
     Description: This is an existing VPC Network Resource provided by Anthem Cloud CoE
-
-
 
   InstanceTypeParameter:
     Type: String
@@ -26,19 +25,6 @@ Parameters:
 
 Resources:
 
-PublicSubnet5:
-  Type: 'AWS::EC2::Subnet'
-  Properties:
-    Tags:
-    - Key: Name
-      Value: "Broker_Subnet4"
-    VpcId:
-      Ref: POC_VPC
-    AvailabilityZone: us-east-1a
-    CidrBlock: 172.31.5.0/24
-    MapPublicIpOnLaunch: true
-
-
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -46,7 +32,7 @@ PublicSubnet5:
       - Key: Name
         Value: "Broker_Subnet1"
       VpcId:
-        Ref: POC_VPC
+        Ref: POCVPC
       AvailabilityZone: us-east-1a
       CidrBlock: 172.31.1.0/24
       MapPublicIpOnLaunch: true
@@ -58,7 +44,7 @@ PublicSubnet5:
       - Key: Name
         Value: "Broker_Subnet2"
       VpcId:
-        Ref: POC_VPC
+        Ref: POCVPC
       AvailabilityZone: us-east-1b
       CidrBlock: 172.31.2.0/24
       MapPublicIpOnLaunch: true
@@ -70,7 +56,7 @@ PublicSubnet5:
       - Key: Name
         Value: "Broker_Subnet3"
       VpcId:
-        Ref: POC_VPC
+        Ref: POCVPC
       AvailabilityZone: us-east-1a
       CidrBlock: 172.31.3.0/24
       MapPublicIpOnLaunch: false
@@ -82,10 +68,23 @@ PublicSubnet5:
       - Key: Name
         Value: "Broker_Subnet4"
       VpcId:
-        Ref: POC_VPC
+        Ref: POCVPC
       AvailabilityZone: us-east-1b
       CidrBlock: 172.31.4.0/24
       MapPublicIpOnLaunch: false
+
+  PublicSubnet5:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker_Subnet5"
+      VpcId:
+        Ref: POCVPC
+      AvailabilityZone: us-east-1a
+      CidrBlock: 172.31.5.0/24
+      MapPublicIpOnLaunch: true
+
 
   #
   #
