@@ -11,8 +11,12 @@ Parameters:
 
   POCVPC:
     Type: String
-    Default: vpc-a80ba2d2
+    Default: AWS::EC2::VPC::Id
     Description: This is an existing VPC Network Resource provided by Anthem Cloud CoE
+
+  PoCMSSubnet1:
+    Type: String
+    Default: vpc-a80ba2d2
 
   InstanceTypeParameter:
     Type: String
@@ -85,6 +89,17 @@ Resources:
       CidrBlock: 172.31.5.0/24
       MapPublicIpOnLaunch: true
 
+  PrivateSubnet5:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      Tags:
+      - Key: Name
+        Value: "Broker_Subnet5"
+      VpcId:
+        Ref: POCVPC
+      AvailabilityZone: us-east-1b
+      CidrBlock: 172.31.5.0/24
+      MapPublicIpOnLaunch: false
 
   #
   #
