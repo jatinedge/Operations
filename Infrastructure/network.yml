@@ -6,8 +6,8 @@ Parameters:
     Default: PoCEnv
     AllowedValues:
       -PoCEnv
-      -NonProdEnv
-      -ProdEnv
+      #-NonProdEnv
+      #-ProdEnv
     ConstraintDescription: must specify the Environment (PoCEnv, NonProdEnv, ProdEnv)
 
 Mappings:
