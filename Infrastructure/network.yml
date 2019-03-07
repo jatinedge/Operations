@@ -1,248 +1,110 @@
-AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  This template Reads a Anthem Account VPC, with a pair of pre-set private subnets spread across two Availabilty Zones.
 
 Parameters:
-  EnvironmentValue:
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: PocDev
+
+  PoCVpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
     Type: String
-    Default: PoCEnv
-    #AllowedValues:
-      #-PoCEnv
-      #-NonProdEnv
-      #-ProdEnv
-    #ConstraintDescription: must specify the Environment (PoCEnv, NonProdEnv, ProdEnv)
+    Default: 10.192.0.0/16
 
-Mappings:
-  Environments:
-    PoCEnv:
-      #ALB : App-PoCEnv
-      VPC: vpc-a80ba2d2
-      Subnets: subnet-0336c8037510ab513, subnet-0404a7ec5817b943b, subnet-0703e3fa27ef36719, subnet-07c4b06f5d3cfec54, subnet-080114293e32dfe48, subnet-0eacaf759c658b3d8
-      PoCEnvSecurityGroup: sg-24332264
-      Region: us-east-1
-      AMI: ami-0080e4c5bc078760e
-      PoCEnvInstanceType: t2.micro
-      ASMIN: 1
-      ASMAX: 4
+  PoCSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.10.0/24
 
-    # NonProdEnv:
-    #   ALB : App-NonProdEnv
-    #   VPC:
-    #   Subnets:
-    #   SecurityGroup:
-    #   Region:
-    #   AMI:
-    #   ASMIN:
-    #   ASMAX:
-    #
-    # ProdEnv:
-    #   ALB : App-ProdEnv
-    #   VPC:
-    #   Subnets:
-    #   SecurityGroup:
-    #   Region:
-    #   AMI:
-    #   ASMIN:
-    #   ASMAX:
-
-
-Conditions:
-  CreatePOCResource:
-    Fn::Equals: [
-    Ref: EnvironmentValue, PoCEnv ]
-
-  # CreateNonProdEnv:Resource:
-  #   Fn::Equals: [
-  #   Ref: EnvironmentValue, NonProdEnv:]
-  #
-  # CreaterodEnv:Resource:
-  #   Fn::Equals: [
-  #   Ref: EnvironmentValue, ProdEnv:]
-
-
-  # PoCMSSubnet1:
-  #   Type: String
-  #   Default: AWS::EC2::subnet::id
-  #   Description: This is an existing VPC Network Subnet Resource provided by Anthem Cloud CoE
-  #
-  # InstanceTypeParameter:
-  #   Type: String
-  #   Default: t2.micro
-  #   AllowedValues:
-  #     - t2.micro
-  #     - m1.small
-  #     - m1.large
-  #   Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+  PoCSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Type: String
+    Default: 10.192.11.0/24
 
 Resources:
-
-  PoCEC2Instance:
-    Type: AWS::EC2::Instance
+  PoCVPC:
+    Type: AWS::EC2::VPC
     Properties:
-      AvailabilityZone: us-east-1a
-      EbsOptimized: true
-      ImageId: {Fn::FindInMap: [ Environments, PoCEnv, AMI ]}
-      InstanceType: {Fn::FindInMap: [ Environments, PoCEnv, PoCEnvInstanceType ]}
-      SecurityGroups: {Fn::FindInMap: [ Environments, PoCEnv, PoCEnvSecurityGroup ]}
+      CidrBlock: !Ref PoCVpcCIDR
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
 
-# #
-#   PublicSubnet1:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet1"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1a
-#       CidrBlock: 172.31.1.0/24
-#       MapPublicIpOnLaunch: true
-#
-#   PublicSubnet2:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet2"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1b
-#       CidrBlock: 172.31.2.0/24
-#       MapPublicIpOnLaunch: true
-#
-#   PrivateSubnet3:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet3"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1a
-#       CidrBlock: 172.31.3.0/24
-#       MapPublicIpOnLaunch: false
-#
-#   PrivateSubnet4:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet4"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1b
-#       CidrBlock: 172.31.4.0/24
-#       MapPublicIpOnLaunch: false
-#
-#   PublicSubnet5:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet5"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1a
-#       CidrBlock: 172.31.5.0/24
-#       MapPublicIpOnLaunch: true
-#
-#   PrivateSubnet6:
-#     Type: 'AWS::EC2::Subnet'
-#     Properties:
-#       Tags:
-#       - Key: Name
-#         Value: "Broker_Subnet6"
-#       VpcId:
-#         Ref: POCVPC
-#       AvailabilityZone: us-east-1b
-#       CidrBlock: 172.31.6.0/24
-#       MapPublicIpOnLaunch: false
-#
-#
-#
-# #   InternetGateway:
-# #     Type: 'AWS::EC2::InternetGateway'
-# #     Properties:
-# #       Tags:
-# #         - Key: Name
-# #           Value: Broker_Gateway
-# #       Join: [_, [
-# #         Ref: 'AWS::StackName']]
-# #   #
-# #   # GatewayToInternet:
-# #   #       Type: 'AWS::EC2::VPCGatewayAttachment'
-# #   #       Properties:
-# #   #         VpcId: !Ref PubPrivateVPC
-# #   #         InternetGatewayId: !Ref InternetGateway
-# #   #
-# #   #     PublicRouteTable:
-# #   #       Type: 'AWS::EC2::RouteTable'
-# #   #       Properties:
-# #   #         VpcId: !Ref PubPrivateVPC
-# #   #         Tags:
-# #   #           - Key: Network
-# #   #             Value: Public
-# #   #
-# #   #     PublicRoute:
-# #   #       Type: 'AWS::EC2::Route'
-# #   #       DependsOn: GatewayToInternet
-# #   #       Properties:
-# #   #         RouteTableId: !Ref PublicRouteTable
-# #   #         DestinationCidrBlock: 0.0.0.0/0
-# #   #         GatewayId: !Ref InternetGateway
-# #   #
-# #   #     PublicSubnet1RouteTableAssociation:
-# #   #       Type: 'AWS::EC2::SubnetRouteTableAssociation'
-# #   #       Properties:
-# #   #         SubnetId: !Ref PublicSubnet1
-# #   #         RouteTableId: !Ref PublicRouteTable
-# #   #
-# #   #     PublicSubnet2RouteTableAssociation:
-# #   #       Type: 'AWS::EC2::SubnetRouteTableAssociation'
-# #   #       Properties:
-# #   #         SubnetId: !Ref PublicSubnet2
-# #   #         RouteTableId: !Ref PublicRouteTable
-# #   #
-# #   #     NatGateway:
-# #   #       Type: "AWS::EC2::NatGateway"
-# #   #       DependsOn: NatPublicIP
-# #   #       Properties:
-# #   #         AllocationId: !GetAtt NatPublicIP.AllocationId
-# #   #         SubnetId: !Ref PublicSubnet1
-# #   #
-# #   #     NatPublicIP:
-# #   #       Type: "AWS::EC2::EIP"
-# #   #       DependsOn: PubPrivateVPC
-# #   #       Properties:
-# #   #         Domain: vpc
-# #   #
-# #   PrivateRouteTable:
-# #     Type: 'AWS::EC2::RouteTable'
-# #     Properties:
-# #       VpcId:
-# #         Ref: POCVPC
-# #       Tags:
-# #         - Key: Network
-# #           Value: Private
-# #   #
-# #   PrivateRoute:
-# #     Type: 'AWS::EC2::Route'
-# #     Properties:
-# #       RouteTableId:
-# #         Ref: PrivateRouteTable
-# #       DestinationCidrBlock: 0.0.0.0/0
-# #       NatGatewayId:
-# #         Ref: NatGateway
-# # #
-# #   #     PrivateSubnet1RouteTableAssociation:
-# #   #       Type: 'AWS::EC2::SubnetRouteTableAssociation'
-# #   #       Properties:
-# #   #         SubnetId: !Ref PrivateSubnet1
-# #   #         RouteTableId: !Ref PrivateRouteTable
-# #   #
-# #   #     PrivateSubnet2RouteTableAssociation:
-# #   #       Type: 'AWS::EC2::SubnetRouteTableAssociation'
-# #   #       Properties:
-# #   #         SubnetId: !Ref PrivateSubnet2
-# #   #         RouteTableId: !Ref PrivateRouteTable
-# #
-# #
-# #
+
+  PoCSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PoCVPC
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref PoCSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+
+  PoCSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PoCVPC
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: !Ref
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref PrivateSubnet1CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: !Ref PoCSubnet2CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PocVPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Routes
+
+Outputs:
+  VPC:
+    Description: A reference to the created VPC
+    Value: !Ref PoCVPC
+
+  PoCSubnets:
+    Description: A list of the public subnets
+    Value: !Join [",", [!Ref PoCSubnet1, !Ref PoCSubnet2]]
+
+  PoCSubnet1:
+    Description: A reference to the public subnet in the 1st Availability Zone
+    Value: !Ref PoCSubnet1
+
+  PoCSubnet2:
+    Description: A reference to the public subnet in the 2nd Availability Zone
+    Value: !Ref PoSubnet2
+
+  PrivateSubnet1:
+    Description: A reference to the private subnet in the 1st Availability Zone
+    Value: !Ref PrivateSubnet1
+
+  PrivateSubnet2:
+    Description: A reference to the private subnet in the 2nd Availability Zone
+    Value: !Ref PrivateSubnet2
