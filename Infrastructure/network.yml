@@ -4,11 +4,11 @@ Parameters:
   EnvironmentValue:
     Type: String
     Default: PoCEnv
-    AllowedValues:
-      -PoCEnv
+    #AllowedValues:
+      #-PoCEnv
       #-NonProdEnv
       #-ProdEnv
-    ConstraintDescription: must specify the Environment (PoCEnv, NonProdEnv, ProdEnv)
+    #ConstraintDescription: must specify the Environment (PoCEnv, NonProdEnv, ProdEnv)
 
 Mappings:
   Environments:
@@ -16,9 +16,10 @@ Mappings:
       #ALB : App-PoCEnv
       VPC: vpc-a80ba2d2
       Subnets: subnet-0336c8037510ab513, subnet-0404a7ec5817b943b, subnet-0703e3fa27ef36719, subnet-07c4b06f5d3cfec54, subnet-080114293e32dfe48, subnet-0eacaf759c658b3d8
-      SecurityGroup: sg-24332264
+      PoCEnvSecurityGroup: sg-24332264
       Region: us-east-1
       AMI: ami-0080e4c5bc078760e
+      PoCEnvInstanceType: t2.micro
       ASMIN: 1
       ASMAX: 4
 
@@ -71,7 +72,20 @@ Conditions:
   #     - m1.large
   #   Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
 
-# Resources:
+Resources:
+
+  PoCEC2Instance:
+    Type: AWS::EC2::Instance
+Properties:
+  AvailabilityZone: us-east-1a
+  EbsOptimized: true
+  ImageId:
+    Ref: AMI
+  InstanceType:
+    Ref: PoCEnvInstanceType
+  SecurityGroups:
+    Ref: PoCEnvSecurityGroup
+  SubnetId: subnet-0336c8037510ab513
 # #
 #   PublicSubnet1:
 #     Type: 'AWS::EC2::Subnet'
