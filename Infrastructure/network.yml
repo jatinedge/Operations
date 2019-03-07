@@ -4,7 +4,8 @@ Description: >
 Parameters:
   EnvironmentName:
     Description: An environment name that will be prefixed to resource names
-    Type: PocDev
+    Type: String
+    Default: PocDev
 
   PoCVpcCIDR:
     Description: Please enter the IP range (CIDR notation) for this VPC
@@ -41,45 +42,23 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+          Value: !Sub ${EnvironmentName} PoCSubnet (AZ1)
 
   PoCSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref PoCVPC
       AvailabilityZone: !Select [1, !GetAZs ""]
-      CidrBlock: !Ref
+      CidrBlock: !Ref PoCSubnet2CIDR
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
-
-  PrivateSubnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [0, !GetAZs ""]
-      CidrBlock: !Ref PrivateSubnet1CIDR
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
-
-  PrivateSubnet2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [1, !GetAZs ""]
-      CidrBlock: !Ref PoCSubnet2CIDR
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+          Value: !Sub ${EnvironmentName} PoCSubnet (AZ2)
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref PocVPC
+      VpcId: !Ref PoCVPC
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public Routes
@@ -90,7 +69,7 @@ Outputs:
     Value: !Ref PoCVPC
 
   PoCSubnets:
-    Description: A list of the public subnets
+    Description: A list of the PoC subnets
     Value: !Join [",", [!Ref PoCSubnet1, !Ref PoCSubnet2]]
 
   PoCSubnet1:
@@ -99,12 +78,4 @@ Outputs:
 
   PoCSubnet2:
     Description: A reference to the public subnet in the 2nd Availability Zone
-    Value: !Ref PoSubnet2
-
-  PrivateSubnet1:
-    Description: A reference to the private subnet in the 1st Availability Zone
-    Value: !Ref PrivateSubnet1
-
-  PrivateSubnet2:
-    Description: A reference to the private subnet in the 2nd Availability Zone
-    Value: !Ref PrivateSubnet2
+    Value: !Ref PoCSubnet2
