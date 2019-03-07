@@ -16,7 +16,7 @@ Mappings:
       #ALB : App-PoCEnv
       VPC: vpc-a80ba2d2
       Subnets: subnet-0336c8037510ab513, subnet-0404a7ec5817b943b, subnet-0703e3fa27ef36719, subnet-07c4b06f5d3cfec54, subnet-080114293e32dfe48, subnet-0eacaf759c658b3d8
-      SecurityGroup:
+      SecurityGroup: sg-24332264
       Region: us-east-1
       AMI: ami-0080e4c5bc078760e
       ASMIN: 1
