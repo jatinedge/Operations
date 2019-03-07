@@ -48,13 +48,13 @@ Conditions:
     Fn::Equals: [
     Ref: EnvironmentValue, PoCEnv ]
 
-  CreateNonProdEnv:Resource:
-    Fn::Equals: [
-    Ref: EnvironmentValue, NonProdEnv:]
-
-  CreaterodEnv:Resource:
-    Fn::Equals: [
-    Ref: EnvironmentValue, ProdEnv:]
+  # CreateNonProdEnv:Resource:
+  #   Fn::Equals: [
+  #   Ref: EnvironmentValue, NonProdEnv:]
+  #
+  # CreaterodEnv:Resource:
+  #   Fn::Equals: [
+  #   Ref: EnvironmentValue, ProdEnv:]
 
 
   # PoCMSSubnet1:
