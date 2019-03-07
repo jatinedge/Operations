@@ -76,16 +76,13 @@ Resources:
 
   PoCEC2Instance:
     Type: AWS::EC2::Instance
-Properties:
-  AvailabilityZone: us-east-1a
-  EbsOptimized: true
-  ImageId:
-    Ref: AMI
-  InstanceType:
-    Ref: PoCEnvInstanceType
-  SecurityGroups:
-    Ref: PoCEnvSecurityGroup
-  SubnetId: subnet-0336c8037510ab513
+    Properties:
+      AvailabilityZone: us-east-1a
+      EbsOptimized: true
+      ImageId: !Fn::FindInMap: [ Environments, PoCEnv, AMI ]
+      InstanceType: !Fn::FindInMap: [ Environments, PoCEnv, PoCEnvInstanceType ]
+      SecurityGroups:!Fn::FindInMap: [ Environments, PoCEnv, PoCEnvSecurityGroup ]
+
 # #
 #   PublicSubnet1:
 #     Type: 'AWS::EC2::Subnet'
