@@ -79,9 +79,9 @@ Resources:
     Properties:
       AvailabilityZone: us-east-1a
       EbsOptimized: true
-      ImageId: !Fn::FindInMap: [ Environments, PoCEnv, AMI ]
-      InstanceType: !Fn::FindInMap: [ Environments, PoCEnv, PoCEnvInstanceType ]
-      SecurityGroups:!Fn::FindInMap: [ Environments, PoCEnv, PoCEnvSecurityGroup ]
+      ImageId: {Fn::FindInMap: [ Environments, PoCEnv, AMI ]}
+      InstanceType: {Fn::FindInMap: [ Environments, PoCEnv, PoCEnvInstanceType ]}
+      SecurityGroups: {Fn::FindInMap: [ Environments, PoCEnv, PoCEnvSecurityGroup ]}
 
 # #
 #   PublicSubnet1:
